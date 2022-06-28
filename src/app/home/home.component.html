@@ -1,0 +1,323 @@
+<div class="bg-red-500 text-white pt-2 pb-10">
+  <div class="w-[1200px] mx-auto py-4 flex justify-between items-center">
+    <h1 class="font-bold text-2xl">Blood Bank Database</h1>
+    <div
+      class="bg-red-400 py-2 px-3 rounded-lg cursor-pointer"
+      (click)="logout()"
+    >
+      Logout
+    </div>
+  </div>
+
+  <div class="w-[1200px] mx-auto grid grid-cols-2 mt-[80px]">
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/504/504174.png"
+      alt=""
+      class="w-[300px]"
+    />
+    <div class="flex mt-[50px] gap-5">
+      <a
+        class="font-bold text-2xl bg-red-400 h-fit py-2 px-4 rounded-lg cursor-pointer hover:bg-red-400/80"
+        href="#donors"
+        >Donors ></a
+      >
+      <a
+        class="font-bold text-2xl bg-red-400 h-fit py-2 px-4 rounded-lg cursor-pointer hover:bg-red-400/80"
+        href="#donations"
+        >Blood Donations ></a
+      >
+    </div>
+  </div>
+</div>
+
+<div
+  id="menu"
+  [ngClass]="{
+    'w-full h-full top-0 left-0 fixed z-[100] sticky-0 opacity-100 hidden': true,
+    block: donorModal,
+    hidden: donorModal == false
+  }"
+>
+  <div class="flex justify-center h-screen items-center antialiased">
+    <div class="flex flex-col w-[500px] mx-auto rounded-lg shadow-xl">
+      <div
+        class="flex flex-row justify-between p-4 bg-red-400 text-white rounded-tl-lg rounded-tr-lg"
+      >
+        <p class="font-semibold text-white">Add Donor</p>
+        <div class="cursor-pointer" (click)="openCloseDonorModal()">
+          <i class="fal fa-times"></i>
+        </div>
+      </div>
+
+      <form
+        class="flex flex-col px-4 py-4 bg-gray-50 rounded-bl-lg rounded-br-lg text-slate-800"
+        (ngSubmit)="onDonorSubmit()"
+        [formGroup]="donorForm"
+        autocomplete="off"
+      >
+        <p class="mb-2 font-semibold text-gray-700">Name</p>
+        <input
+          type="text"
+          required
+          formControlName="name"
+          placeholder="Donor Name"
+          class="p-2 text-sm mb-3 bg-white border border-gray-200 rounded shadow-sm outline-0 w-full"
+        />
+
+        <p class="mb-2 font-semibold text-gray-700">Email</p>
+        <input
+          type="email"
+          required
+          formControlName="email"
+          placeholder="Donor Email"
+          class="p-2 text-sm mb-3 bg-white border border-gray-200 rounded shadow-sm outline-0 w-full"
+        />
+
+        <button
+          type="submit"
+          name="submit"
+          class="px-4 py-3 mt-2 text-white w-full font-semibold bg-red-400 rounded-lg hover:bg-red-500 cursor-pointer"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  id="menu"
+  [ngClass]="{
+    'w-full h-full top-0 left-0 fixed z-[100] sticky-0 opacity-100 hidden': true,
+    block: donationModal,
+    hidden: donationModal == false
+  }"
+>
+  <div class="flex justify-center h-screen items-center antialiased">
+    <div class="flex flex-col w-[500px] mx-auto rounded-lg shadow-xl">
+      <div
+        class="flex flex-row justify-between p-4 bg-red-400 text-white rounded-tl-lg rounded-tr-lg"
+      >
+        <p class="font-semibold text-white">Add Donation</p>
+        <div class="cursor-pointer" (click)="openCloseDonationModal()">
+          <i class="fal fa-times"></i>
+        </div>
+      </div>
+
+      <form
+        class="flex flex-col px-4 py-4 bg-gray-50 rounded-bl-lg rounded-br-lg text-slate-800"
+        (ngSubmit)="onDonationSubmit()"
+        [formGroup]="donationForm"
+        autocomplete="off"
+      >
+        <p class="mb-2 font-semibold text-gray-700">Blood Type</p>
+        <input
+          type="text"
+          required
+          formControlName="bloodType"
+          placeholder="Blood type"
+          class="p-2 text-sm mb-3 bg-white border border-gray-200 rounded shadow-sm outline-0 w-full"
+        />
+
+        <p class="mb-2 font-semibold text-gray-700">No. of Bag/s</p>
+        <input
+          type="number"
+          required
+          formControlName="qtyBagOfBlood"
+          placeholder="Qty"
+          class="p-2 text-sm mb-3 bg-white border border-gray-200 rounded shadow-sm outline-0 w-full"
+        />
+
+        <p class="mb-2 font-semibold text-gray-700">Donor</p>
+        <select formControlName="donor" required class="p-2 text-sm mb-3 bg-white border border-gray-200 rounded shadow-sm outline-0 w-full">
+          <option [value]="donor.name" *ngFor="let donor of donors">{{ donor.name }}</option>
+        </select>
+
+        <button
+          type="submit"
+          name="submit"
+          class="px-4 py-3 mt-2 text-white w-full font-semibold bg-red-400 rounded-lg hover:bg-red-500 cursor-pointer"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="w-[1200px] mx-auto">
+  <div class="h-screen pt-[60px]" id="donors">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="font-bold text-2xl text-slate-800">Donors</h1>
+      <button
+        class="font-bold text-sm bg-red-400 text-white py-2 px-3 rounded-lg hover:bg-red-400/80"
+        (click)="openCloseDonorModal()"
+      >
+        Add Donor
+      </button>
+    </div>
+
+    <div class="">
+      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Email
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+              <tr *ngFor="let donor of donors">
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donor.id }}</p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donor.name }}</p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donor.email }}</p>
+                </td>
+                <td
+                  class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex gap-2"
+                >
+                  <button
+                    (click)="editDonorData(donor)"
+                    class="bg-gray-300 py-1 px-3 rounded-md shadow-sm font-semibold hover:bg-gray-300/80 cursor-pointer"
+                  >
+                    Edit
+                  </button>
+                  <button
+                  (click)="deleteDonor(donor)"
+                    class="bg-red-500 py-1 px-3 rounded-md shadow-sm font-semibold hover:bg-red-500/80 cursor-pointer text-white"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="donors == false" class="w-full">
+            <img class="w-[400px] mx-auto" src="https://cdn.dribbble.com/users/1914815/screenshots/5377461/media/9d5362360b0070eced66c3f564566b45.png?compress=1&resize=400x300" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-screen pt-[60px]" id="donations">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="font-bold text-2xl text-slate-800">Donations</h1>
+      <button
+        class="font-bold text-sm bg-red-400 text-white py-2 px-3 rounded-lg hover:bg-red-400/80"
+        (click)="openCloseDonationModal()"
+      >
+        Add Donation
+      </button>
+    </div>
+
+    <div class="">
+      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Blood Type
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  No. of Bag/s
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Donor
+                </th>
+
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Date Donated
+                </th>
+                <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-xs font-semibold text-slate-50 uppercase tracking-wider"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let donation of donations">
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donation.id }}</p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donation.bloodType }}</p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donation.qtyBagOfBlood }}</p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donation.donor }}</p>
+                </td>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <p class="text-gray-900 whitespace-no-wrap">{{ donation.date }}</p>
+                </td>
+                <td
+                  class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex gap-3"
+                >
+                  <button
+                    (click)="editDonationData(donation)"
+                    class="bg-gray-300 py-1 px-3 rounded-md shadow-sm font-semibold hover:bg-gray-300/80 cursor-pointer"
+                  >
+                    Edit
+                  </button>
+                  <button
+                  (click)="deleteDonation(donation)"
+                    class="bg-red-500 py-1 px-3 rounded-md shadow-sm font-semibold hover:bg-red-500/80 cursor-pointer text-white"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="donations == false" class="w-full">
+            <img class="w-[400px] mx-auto" src="https://cdn.dribbble.com/users/1914815/screenshots/5377461/media/9d5362360b0070eced66c3f564566b45.png?compress=1&resize=400x300" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

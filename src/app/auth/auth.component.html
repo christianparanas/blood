@@ -1,0 +1,39 @@
+<div class="">
+  <div class="w-[1200px] mx-auto grid grid-cols-[1fr_500px] pt-[100px]">
+    <div class="">
+      <img
+        src="https://www.rrp.com.au/wp-content/uploads/2020/01/Blood-Donation.jpg"
+        alt=""
+      />
+    </div>
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="authForm"
+      autocomplete="off"
+      class="w-[400px] bg-slate-100 grid gap-4 p-4 h-fit mt-[70px]"
+    >
+      <h1 class="font-black text-2xl text-slate-700">Login</h1>
+
+      <input
+        type="text"
+        class="w-full outline-none py-2 px-3 text-sm rounded-md"
+        placeholder="admin"
+        required
+        formControlName="username"
+      />
+      <input
+        type="password"
+        class="w-full outline-none py-2 px-3 text-sm rounded-md"
+        placeholder="admin"
+        required
+        formControlName="password"
+      />
+      <button
+        type="submit"
+        class="bg-red-500 font-bold py-2 text-white rounded-md shadow-md"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>
